@@ -259,6 +259,13 @@ const App = {
         if (State.darkMode) document.documentElement.classList.add('dark');
         this.bindEvents();
         
+        // Solicitar permisos de notificación nativa
+        if ("Notification" in window) {
+            if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+                Notification.requestPermission();
+            }
+        }
+        
         // Listener de Autenticación
         auth.onAuthStateChanged(async (firebaseUser) => {
             State.isInitializing = true;
@@ -317,11 +324,30 @@ const App = {
                 
                 // Escuchar cambios en tiempo real para progreso y notificaciones
                 if (this.unsubscribeUser) this.unsubscribeUser();
+                let isFirstLoad = true;
                 this.unsubscribeUser = db.collection("users").doc(firebaseUser.uid).onSnapshot(snapshot => {
                     const latestData = snapshot.data();
                     if (latestData) {
+                        const incomingNotifications = latestData.notifications || [];
+                        
+                        // Disparar notificación nativa si hay una nueva evaluación
+                        if (!isFirstLoad) {
+                            const currentIds = new Set((State.notifications || []).map(n => n.id));
+                            incomingNotifications.forEach(n => {
+                                if (!currentIds.has(n.id) && n.type === 'evaluation') {
+                                    if ("Notification" in window && Notification.permission === "granted") {
+                                        new Notification("Nueva tarea calificada", {
+                                            body: "El maestro ha revisado tu entrega...",
+                                            icon: "./logo_maestro_con_blanco.png"
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                        isFirstLoad = false;
+
                         State.progress = latestData.progress || {};
-                        State.notifications = latestData.notifications || [];
+                        State.notifications = incomingNotifications;
                         State.assignments = latestData.assignments || {};
                         
                         window.renderNotifications();
@@ -1428,40 +1454,7 @@ window.switchPlayerTab = (tabId) => {
 };
 
 
-window.togglePiP = async () => {
-    const videoLocal = document.getElementById('course-video');
-    const videoIframe = document.getElementById('course-iframe');
-    const container = document.getElementById('video-container');
-    const pipBtn = document.getElementById('pip-btn');
-    
-    // For local video element
-    if (videoLocal && !videoLocal.classList.contains('hidden')) {
-        try {
-            if (document.pictureInPictureElement) {
-                await document.exitPictureInPicture();
-                pipBtn.classList.remove('text-primary', 'border-primary');
-            } else {
-                await videoLocal.requestPictureInPicture();
-                pipBtn.classList.add('text-primary', 'border-primary');
-            }
-        } catch (error) {
-            console.error("PiP not supported or failed:", error);
-            UI.toast("El modo Picture-in-Picture no está soportado en este navegador.", "error");
-        }
-    } 
-    // For YouTube iframe (CSS fallback since native PiP is restricted)
-    else if (videoIframe && !videoIframe.classList.contains('hidden')) {
-        if (container.classList.contains('fixed')) {
-            // Exit CSS PiP
-            container.className = "w-full aspect-video bg-black rounded-xl overflow-hidden shadow-floating relative group border border-surface-border/20";
-            pipBtn.classList.remove('text-primary', 'border-primary');
-        } else {
-            // Enter CSS PiP
-            container.className = "fixed bottom-8 right-8 w-80 aspect-video bg-black rounded-xl overflow-hidden shadow-floating border border-surface-border z-[100] cursor-move transition-transform hover:scale-105";
-            pipBtn.classList.add('text-primary', 'border-primary');
-        }
-    }
-};
+
 
 
 window.toggleSearchModal = () => {

@@ -519,7 +519,21 @@ const App = {
 
     renderCoursesGrid() {
         const grid = document.getElementById('course-grid');
+        const discovery = document.getElementById('discovery-container');
+        const gridTitle = document.getElementById('course-grid-title');
         grid.innerHTML = '';
+        
+        // Determinar si el usuario tiene cursos inscritos
+        const hasEnrolledCourses = State.enrolledCourses && State.enrolledCourses.length > 0;
+
+        if (!State.isAdmin && !hasEnrolledCourses) {
+            discovery.classList.remove('hidden');
+            gridTitle.textContent = "Catálogo Recomendado";
+            this.renderDiscoveryDashboard();
+        } else {
+            discovery.classList.add('hidden');
+            gridTitle.textContent = "Tus Paquetes Formativos";
+        }
         
         State.allCourses.forEach(course => {
             // Admin tiene acceso total, alumnos solo si están enrolados
@@ -574,6 +588,58 @@ const App = {
                 progressCont.insertBefore(pBar, progressCont.querySelector('.mt-auto'));
             }
         });
+    },
+
+    renderDiscoveryDashboard() {
+        const container = document.getElementById('discovery-container');
+        const userName = State.user ? State.user.fullName.split(' ')[0] : 'Estudiante';
+        
+        container.innerHTML = `
+            <!-- Welcome Hero -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-indigo-700 p-8 md:p-12 shadow-floating mb-12 group">
+                <div class="absolute -right-20 -top-20 w-80 h-80 bg-white/10 rounded-full blur-3xl group-hover:bg-white/20 transition-colors duration-700"></div>
+                <div class="relative z-10 max-w-2xl">
+                    <span class="inline-block px-4 py-1.5 bg-white/20 backdrop-blur-md text-white text-xs font-black uppercase tracking-widest rounded-full mb-6">Tu futuro comienza hoy</span>
+                    <h2 class="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
+                        ¡Hola, Bienvenido! Tu camino hacia la <span class="text-secondary drop-shadow-sm">Sabiduría del Cielo</span> empieza aquí.
+                    </h2>
+                    <p class="text-indigo-100 text-lg mb-8 leading-relaxed opacity-90">
+                        Aún no tienes cursos activos, pero estás a un paso de acceder a la formación que transformará tu vida espiritual.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <button onclick="document.getElementById('course-grid').scrollIntoView({behavior: 'smooth'})" 
+                            class="px-8 py-4 bg-secondary text-white font-black rounded-2xl hover:bg-secondary-hover transition-all transform hover:scale-105 shadow-xl shadow-secondary/30 flex items-center gap-3">
+                            Explorar Catálogo <span class="material-symbols-outlined">rocket_launch</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Benefits Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-surface-base border border-surface-border p-6 rounded-2xl shadow-soft hover:border-primary/30 transition-all group">
+                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined">verified</span>
+                    </div>
+                    <h4 class="font-bold text-text-main mb-2">Certificación Oficial</h4>
+                    <p class="text-sm text-text-muted">Avala tus conocimientos con diplomas digitales verificables con código QR.</p>
+                </div>
+                <div class="bg-surface-base border border-surface-border p-6 rounded-2xl shadow-soft hover:border-primary/30 transition-all group">
+                    <div class="w-12 h-12 bg-orange-500/10 rounded-xl flex items-center justify-center text-orange-500 mb-4 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined">all_inclusive</span>
+                    </div>
+                    <h4 class="font-bold text-text-main mb-2">Acceso Vitalicio</h4>
+                    <p class="text-sm text-text-muted">Inscríbete una vez y accede al contenido para siempre, a tu propio ritmo.</p>
+                </div>
+                <div class="bg-surface-base border border-surface-border p-6 rounded-2xl shadow-soft hover:border-primary/30 transition-all group">
+                    <div class="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center text-green-500 mb-4 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined">support_agent</span>
+                    </div>
+                    <h4 class="font-bold text-text-main mb-2">Soporte Continuo</h4>
+                    <p class="text-sm text-text-muted">Resolución de dudas directamente con tus mentores a través de la plataforma.</p>
+                </div>
+            </div>
+        `;
     },
 
     handleCourseClick(course, hasAccess) {

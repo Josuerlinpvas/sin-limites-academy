@@ -2118,6 +2118,10 @@ window.adminSwitchTab = (tabId) => {
             btn.classList.add('text-primary', 'border-primary');
             btn.classList.remove('text-text-muted', 'border-transparent');
             section.classList.remove('hidden');
+            
+            // Trigger data loading for specific tabs
+            if (t === 'estudiantes') window.loadAdminStudents();
+            if (t === 'evaluacion') window.renderAdminEvaluations();
             if (t === 'analiticas' && window.renderAdminAnalytics) window.renderAdminAnalytics();
         } else {
             btn.classList.remove('text-primary', 'border-primary');

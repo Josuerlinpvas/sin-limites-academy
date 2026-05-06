@@ -1,3 +1,40 @@
+
+window.addEventListener('DOMContentLoaded', () => {
+    if(document.getElementById('admin-lesson-assignment-quill')) {
+        window.quillEditor = new Quill('#admin-lesson-assignment-quill', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline', 'strike'],
+                    ['blockquote', 'code-block'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'script': 'sub'}, { 'script': 'super' }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    [{ 'color': [] }, { 'background': [] }],
+                    ['link', 'video'],
+                    ['clean']
+                ]
+            }
+        });
+        
+        window.quillEditor.on('text-change', () => {
+            document.getElementById('admin-lesson-assignment').value = window.quillEditor.root.innerHTML;
+        });
+    }
+});
+
+
+// Registrar PWA Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').then(reg => {
+      console.log('SW registrado: ', reg.scope);
+    }).catch(err => {
+      console.log('SW fallo: ', err);
+    });
+  });
+}
 /**
  * SIN LÍMITES ACADEMY - Core Engine
  * Professional LMS Architecture with Firebase Integration
@@ -1390,6 +1427,123 @@ window.switchPlayerTab = (tabId) => {
     }
 };
 
+
+window.togglePiP = async () => {
+    const videoLocal = document.getElementById('course-video');
+    const videoIframe = document.getElementById('course-iframe');
+    const container = document.getElementById('video-container');
+    const pipBtn = document.getElementById('pip-btn');
+    
+    // For local video element
+    if (videoLocal && !videoLocal.classList.contains('hidden')) {
+        try {
+            if (document.pictureInPictureElement) {
+                await document.exitPictureInPicture();
+                pipBtn.classList.remove('text-primary', 'border-primary');
+            } else {
+                await videoLocal.requestPictureInPicture();
+                pipBtn.classList.add('text-primary', 'border-primary');
+            }
+        } catch (error) {
+            console.error("PiP not supported or failed:", error);
+            UI.toast("El modo Picture-in-Picture no está soportado en este navegador.", "error");
+        }
+    } 
+    // For YouTube iframe (CSS fallback since native PiP is restricted)
+    else if (videoIframe && !videoIframe.classList.contains('hidden')) {
+        if (container.classList.contains('fixed')) {
+            // Exit CSS PiP
+            container.className = "w-full aspect-video bg-black rounded-xl overflow-hidden shadow-floating relative group border border-surface-border/20";
+            pipBtn.classList.remove('text-primary', 'border-primary');
+        } else {
+            // Enter CSS PiP
+            container.className = "fixed bottom-8 right-8 w-80 aspect-video bg-black rounded-xl overflow-hidden shadow-floating border border-surface-border z-[100] cursor-move transition-transform hover:scale-105";
+            pipBtn.classList.add('text-primary', 'border-primary');
+        }
+    }
+};
+
+
+window.toggleSearchModal = () => {
+    const modal = document.getElementById('search-modal');
+    const input = document.getElementById('global-search-input');
+    if (modal.classList.contains('hidden')) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        setTimeout(() => {
+            modal.classList.replace('opacity-0', 'opacity-100');
+            input.focus();
+        }, 10);
+    } else {
+        modal.classList.replace('opacity-100', 'opacity-0');
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }, 300);
+    }
+};
+
+window.performGlobalSearch = () => {
+    const query = document.getElementById('global-search-input').value.toLowerCase().trim();
+    const resultsContainer = document.getElementById('global-search-results');
+    
+    if (query.length < 2) {
+        resultsContainer.innerHTML = '<div class="p-8 text-center text-text-muted text-sm">Escribe al menos 2 caracteres...</div>';
+        return;
+    }
+    
+    let results = [];
+    
+    State.courses.forEach(course => {
+        // Buscar en título de curso
+        if (course.title.toLowerCase().includes(query) || course.description.toLowerCase().includes(query)) {
+            results.push({
+                type: 'course',
+                title: course.title,
+                desc: 'Curso completo',
+                icon: 'school',
+                action: () => { window.toggleSearchModal(); UI.showView('dashboard'); } // Ideally navigate to course details if they existed
+            });
+        }
+        
+        // Buscar en lecciones
+        course.modules.forEach(mod => {
+            mod.lessons.forEach(lesson => {
+                if (lesson.title.toLowerCase().includes(query) || (lesson.assignment && lesson.assignment.toLowerCase().includes(query))) {
+                    results.push({
+                        type: 'lesson',
+                        title: lesson.title,
+                        desc: `${course.title} > ${mod.title}`,
+                        icon: 'play_circle',
+                        action: () => {
+                            window.toggleSearchModal();
+                            App.openPlayer(course);
+                            setTimeout(() => App.playVideo(lesson, mod.title), 500);
+                        }
+                    });
+                }
+            });
+        });
+    });
+    
+    if (results.length === 0) {
+        resultsContainer.innerHTML = '<div class="p-8 text-center text-text-muted text-sm">No se encontraron resultados para "' + query + '"</div>';
+        return;
+    }
+    
+    resultsContainer.innerHTML = results.map(res => `
+        <div onclick="const action = ${res.action.toString()}; action();" class="p-4 hover:bg-surface-dim transition-colors cursor-pointer border-b border-surface-border last:border-0 group flex items-center gap-4">
+            <div class="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                <span class="material-symbols-outlined">${res.icon}</span>
+            </div>
+            <div>
+                <p class="font-bold text-text-main text-sm">${res.title}</p>
+                <p class="text-[10px] text-text-muted uppercase tracking-wider">${res.desc}</p>
+            </div>
+        </div>
+    `).join('');
+};
+
 window.toggleCinemaMode = () => {
     State.cinemaMode = !State.cinemaMode;
     const mainCol = document.getElementById('player-main-column');
@@ -1891,25 +2045,24 @@ window.adminSaveCourse = async (e) => {
 
 let adminAllStudents = [];
 
-window.adminSwitchTab = (tab) => {
-    const tabs = ['cursos', 'estudiantes', 'evaluacion'];
+window.adminSwitchTab = (tabId) => {
+    const tabs = ['cursos', 'estudiantes', 'evaluacion', 'analiticas'];
     tabs.forEach(t => {
-        const btn = document.getElementById(`admin-tab-${t}`);
-        const sec = document.getElementById(`admin-section-${t}`);
-        if (t === tab) {
-            btn.className = "px-6 py-4 font-bold text-primary border-b-2 border-primary transition-colors flex items-center gap-2 whitespace-nowrap";
-            sec.classList.replace('hidden', 'block');
+        const btn = document.getElementById('admin-tab-' + t);
+        const section = document.getElementById('admin-section-' + t);
+        if(!btn || !section) return;
+        
+        if (t === tabId) {
+            btn.classList.add('text-primary', 'border-primary');
+            btn.classList.remove('text-text-muted', 'border-transparent');
+            section.classList.remove('hidden');
+            if (t === 'analiticas' && window.renderAdminAnalytics) window.renderAdminAnalytics();
         } else {
-            btn.className = "px-6 py-4 font-bold text-text-muted border-b-2 border-transparent hover:text-text-main transition-colors flex items-center gap-2 whitespace-nowrap";
-            sec.classList.replace('block', 'hidden');
+            btn.classList.remove('text-primary', 'border-primary');
+            btn.classList.add('text-text-muted', 'border-transparent');
+            section.classList.add('hidden');
         }
     });
-
-    if (tab === 'estudiantes') {
-        window.loadAdminStudents();
-    } else if (tab === 'evaluacion') {
-        window.renderAdminEvaluations();
-    }
 };
 
 window.loadAdminStudents = async () => {
@@ -2441,3 +2594,98 @@ window.handleNotifClick = async (notifId) => {
 
 // Iniciar aplicación
 App.init();
+
+window.adminChartInstance = null;
+window.renderAdminAnalytics = async () => {
+    try {
+        const studentsSnap = await State.db.collection('users').get();
+        const students = [];
+        studentsSnap.forEach(doc => students.push({ id: doc.id, ...doc.data() }));
+        
+        document.getElementById('analytics-total-students').innerText = students.length;
+        
+        let completedCourses = 0;
+        let totalEnrolled = 0;
+        const now = Date.now();
+        const riskStudents = [];
+        
+        const courseProgressMap = {};
+        State.courses.forEach(c => courseProgressMap[c.id] = {title: c.title, totalProgress: 0, count: 0});
+
+        students.forEach(student => {
+            // Riesgo si inactivo > 7 días o sin lastLogin
+            const lastLogin = student.lastLogin || 0;
+            const daysInactive = (now - lastLogin) / (1000 * 60 * 60 * 24);
+            if (daysInactive > 7) {
+                riskStudents.push({...student, daysInactive: Math.floor(daysInactive)});
+            }
+            
+            // Progress
+            if (student.progress) {
+                Object.keys(student.progress).forEach(courseId => {
+                    totalEnrolled++;
+                    const cp = student.progress[courseId];
+                    if (cp.completed) completedCourses++;
+                    
+                    if (courseProgressMap[courseId]) {
+                        // Calcular porcentaje simple (solo lecciones completadas)
+                        const completedLessons = Object.values(cp).filter(v => v === true).length;
+                        // Estimación rápida (mejor sería calcular contra el total de lecciones del curso)
+                        courseProgressMap[courseId].totalProgress += completedLessons; 
+                        courseProgressMap[courseId].count++;
+                    }
+                });
+            }
+        });
+
+        document.getElementById('analytics-completion-rate').innerText = totalEnrolled > 0 ? Math.round((completedCourses / totalEnrolled) * 100) + '%' : '0%';
+        document.getElementById('analytics-risk-students').innerText = riskStudents.length;
+        
+        const riskHtml = riskStudents.length === 0 ? '<p class="text-sm text-text-muted text-center p-4">Todos los alumnos están activos.</p>' : riskStudents.sort((a,b) => b.daysInactive - a.daysInactive).slice(0,10).map(s => `
+            <div class="p-3 border border-red-500/20 bg-red-500/5 rounded-lg flex justify-between items-center">
+                <div>
+                    <p class="font-bold text-sm text-text-main">${s.name || s.email}</p>
+                    <p class="text-[10px] text-text-muted">${s.email}</p>
+                </div>
+                <span class="text-xs font-bold text-red-500 bg-red-500/10 px-2 py-1 rounded">Inactivo ${s.daysInactive} días</span>
+            </div>
+        `).join('');
+        document.getElementById('risk-students-list').innerHTML = riskHtml;
+
+        // Chart.js
+        const ctx = document.getElementById('chart-courses');
+        if(ctx) {
+            if (window.adminChartInstance) window.adminChartInstance.destroy();
+            
+            const labels = [];
+            const data = [];
+            Object.values(courseProgressMap).forEach(cm => {
+                if(cm.count > 0) {
+                    labels.push(cm.title.substring(0, 15) + '...');
+                    data.push(Math.round((cm.totalProgress / cm.count) * 10)); // Estimación (lecciones completadas promedio)
+                }
+            });
+
+            window.adminChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Interacción Promedio (Lecciones Vistas)',
+                        data: data,
+                        backgroundColor: '#38B6FF',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+        }
+    } catch(err) {
+        console.error("Error en analiticas:", err);
+    }
+};
+

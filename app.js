@@ -121,14 +121,22 @@ const UI = {
     },
     
     showView(viewName) {
+        console.log(`[UI] Switching to view: ${viewName}`);
         Object.keys(this.views).forEach(v => {
             if (this.views[v]) {
-                this.views[v].classList.replace('view-active', 'view-hidden');
+                this.views[v].classList.remove('view-active');
+                this.views[v].classList.add('view-hidden');
             }
         });
+        
         if (this.views[viewName]) {
-            this.views[viewName].classList.replace('view-hidden', 'view-active');
+            this.views[viewName].classList.remove('view-hidden');
+            this.views[viewName].classList.add('view-active');
         }
+        
+        // Reset scroll in the main container
+        const main = document.querySelector('main');
+        if (main) main.scrollTop = 0;
         window.scrollTo(0, 0);
 
         // Update Sidebar Navigation States

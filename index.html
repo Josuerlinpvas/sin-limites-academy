@@ -197,6 +197,104 @@
         </div>
     </div>
 
+    <!-- MODAL DE EVALUACIÓN (Quick Review) -->
+    <div id="modal-eval"
+        class="fixed inset-0 z-[500] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div
+            class="bg-surface-base w-full max-w-2xl rounded-2xl shadow-floating overflow-hidden border border-surface-border flex flex-col max-h-[90vh]">
+            <div class="p-6 border-b border-surface-border flex justify-between items-center bg-surface-dim/30">
+                <h3 class="font-bold text-text-main flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">rate_review</span>
+                    Evaluar Asignación
+                </h3>
+                <button onclick="window.closeEvalModal()"
+                    class="text-text-muted hover:text-red-500 transition-colors">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-8 custom-scroll space-y-8">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="p-4 bg-surface-dim rounded-xl border border-surface-border">
+                        <p class="text-[10px] font-bold text-text-muted uppercase mb-1">Estudiante</p>
+                        <p id="eval-student-name" class="font-bold text-text-main text-sm">Nombre Estudiante</p>
+                    </div>
+                    <div class="p-4 bg-surface-dim rounded-xl border border-surface-border">
+                        <p class="text-[10px] font-bold text-text-muted uppercase mb-1">Lección</p>
+                        <p id="eval-lesson-title" class="font-bold text-text-main text-sm truncate">Título
+                            Lección</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <p class="text-[10px] font-bold text-text-muted uppercase mb-2">Enlace del Estudiante
+                        </p>
+                        <a id="eval-link" href="#" target="_blank"
+                            class="flex items-center gap-3 p-4 bg-primary/5 border border-primary/20 rounded-xl text-primary font-bold hover:bg-primary/10 transition-colors">
+                            <span class="material-symbols-outlined">link</span>
+                            Ver Archivo Enviado
+                        </a>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold text-text-muted uppercase mb-2">Comentario del
+                            Estudiante</p>
+                        <div class="p-4 bg-surface-dim border border-surface-border rounded-xl text-sm italic text-text-main"
+                            id="eval-comment-student">
+                            Sin comentario.
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="border-surface-border">
+
+                <form id="form-eval-admin" class="space-y-6">
+                    <input type="hidden" id="eval-uid">
+                    <input type="hidden" id="eval-assignkey">
+
+                    <div>
+                        <p class="text-[10px] font-bold text-text-main uppercase mb-3">Veredicto de la
+                            Asignación</p>
+                        <div class="grid grid-cols-2 gap-4">
+                            <label
+                                class="relative flex items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all gap-2 group border-surface-border hover:border-green-500/50 [&:has(:checked)]:border-green-500 [&:has(:checked)]:bg-green-500/5">
+                                <input type="radio" name="eval_status" value="satisfactory" class="hidden"
+                                    checked>
+                                <span
+                                    class="material-symbols-outlined text-green-500 group-hover:scale-110 transition-transform">check_circle</span>
+                                <span class="text-xs font-bold text-text-main">Satisfactoria</span>
+                            </label>
+                            <label
+                                class="relative flex items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all gap-2 group border-surface-border hover:border-amber-500/50 [&:has(:checked)]:border-amber-500 [&:has(:checked)]:bg-amber-500/5">
+                                <input type="radio" name="eval_status" value="incomplete" class="hidden">
+                                <span
+                                    class="material-symbols-outlined text-amber-500 group-hover:scale-110 transition-transform">warning</span>
+                                <span class="text-xs font-bold text-text-main">Incompleta</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p class="text-[10px] font-bold text-text-main uppercase mb-2">Comentario de
+                            Retroalimentación</p>
+                        <textarea id="eval-feedback" rows="4"
+                            class="w-full p-4 bg-surface-dim border border-surface-border rounded-xl text-sm focus:border-primary outline-none transition-colors"
+                            placeholder="Escribe aquí tu retroalimentación para el estudiante..."
+                            required></textarea>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full py-4 bg-primary text-white font-bold rounded-xl hover:bg-primary-hover shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined">send</span> Enviar Evaluación
+                        <div
+                            class="hidden animate-spin h-4 w-4 border-2 border-white/30 border-t-white rounded-full">
+                        </div>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- VIEW: LANDING PAGE (Dinamica) -->
     <section id="view-landing"
         class="view-section view-hidden fixed inset-0 z-[100] flex flex-col bg-surface-base overflow-y-auto custom-scroll">
@@ -472,7 +570,7 @@
 
         <!-- Main Content -->
         <main
-            class="flex-1 overflow-y-auto overflow-x-hidden p-8 custom-scroll relative bg-surface-dim transition-colors duration-300">
+            class="flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-8 custom-scroll relative bg-surface-dim transition-colors duration-300">
 
             <!-- VIEW: DASHBOARD -->
             <section id="view-dashboard" class="view-section view-active w-full max-w-6xl mx-auto">
@@ -824,7 +922,7 @@
                 </div>
             </section>
             <!-- VIEW: MI CUENTA -->
-            <section id="view-account" class="view-section view-hidden flex-1 overflow-y-auto bg-surface-base">
+            <section id="view-account" class="view-section view-hidden w-full max-w-6xl mx-auto">
                 <div class="max-w-5xl mx-auto px-6 py-12">
                     <div class="mb-10">
                         <h2 class="text-3xl font-bold text-text-main tracking-tight">Mi Cuenta</h2>
@@ -999,7 +1097,7 @@
     </section>
 
     <!-- VIEW: ADMIN PANEL -->
-    <section id="view-admin" class="view-section view-hidden flex-1 overflow-y-auto bg-surface-base">
+    <section id="view-admin" class="view-section view-hidden w-full max-w-6xl mx-auto">
         <div class="max-w-6xl mx-auto px-4 md:px-8 py-12">
             <div class="mb-10">
                 <h2 class="text-3xl font-bold text-text-main tracking-tight flex items-center gap-3">
@@ -1343,102 +1441,6 @@
                 </div>
             </div>
 
-            <!-- MODAL DE EVALUACIÓN (Quick Review) -->
-            <div id="modal-eval"
-                class="fixed inset-0 z-[500] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
-                <div
-                    class="bg-surface-base w-full max-w-2xl rounded-2xl shadow-floating overflow-hidden border border-surface-border flex flex-col max-h-[90vh]">
-                    <div class="p-6 border-b border-surface-border flex justify-between items-center bg-surface-dim/30">
-                        <h3 class="font-bold text-text-main flex items-center gap-2">
-                            <span class="material-symbols-outlined text-primary">rate_review</span>
-                            Evaluar Asignación
-                        </h3>
-                        <button onclick="window.closeEvalModal()"
-                            class="text-text-muted hover:text-red-500 transition-colors">
-                            <span class="material-symbols-outlined">close</span>
-                        </button>
-                    </div>
-
-                    <div class="flex-1 overflow-y-auto p-8 custom-scroll space-y-8">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            <div class="p-4 bg-surface-dim rounded-xl border border-surface-border">
-                                <p class="text-[10px] font-bold text-text-muted uppercase mb-1">Estudiante</p>
-                                <p id="eval-student-name" class="font-bold text-text-main text-sm">Nombre Estudiante</p>
-                            </div>
-                            <div class="p-4 bg-surface-dim rounded-xl border border-surface-border">
-                                <p class="text-[10px] font-bold text-text-muted uppercase mb-1">Lección</p>
-                                <p id="eval-lesson-title" class="font-bold text-text-main text-sm truncate">Título
-                                    Lección</p>
-                            </div>
-                        </div>
-
-                        <div class="space-y-4">
-                            <div>
-                                <p class="text-[10px] font-bold text-text-muted uppercase mb-2">Enlace del Estudiante
-                                </p>
-                                <a id="eval-link" href="#" target="_blank"
-                                    class="flex items-center gap-3 p-4 bg-primary/5 border border-primary/20 rounded-xl text-primary font-bold hover:bg-primary/10 transition-colors">
-                                    <span class="material-symbols-outlined">link</span>
-                                    Ver Archivo Enviado
-                                </a>
-                            </div>
-                            <div>
-                                <p class="text-[10px] font-bold text-text-muted uppercase mb-2">Comentario del
-                                    Estudiante</p>
-                                <div class="p-4 bg-surface-dim border border-surface-border rounded-xl text-sm italic text-text-main"
-                                    id="eval-comment-student">
-                                    Sin comentario.
-                                </div>
-                            </div>
-                        </div>
-
-                        <hr class="border-surface-border">
-
-                        <form id="form-eval-admin" class="space-y-6">
-                            <input type="hidden" id="eval-uid">
-                            <input type="hidden" id="eval-assignkey">
-
-                            <div>
-                                <p class="text-[10px] font-bold text-text-main uppercase mb-3">Veredicto de la
-                                    Asignación</p>
-                                <div class="grid grid-cols-2 gap-4">
-                                    <label
-                                        class="relative flex items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all gap-2 group border-surface-border hover:border-green-500/50 [&:has(:checked)]:border-green-500 [&:has(:checked)]:bg-green-500/5">
-                                        <input type="radio" name="eval_status" value="satisfactory" class="hidden"
-                                            checked>
-                                        <span
-                                            class="material-symbols-outlined text-green-500 group-hover:scale-110 transition-transform">check_circle</span>
-                                        <span class="text-xs font-bold text-text-main">Satisfactoria</span>
-                                    </label>
-                                    <label
-                                        class="relative flex items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all gap-2 group border-surface-border hover:border-amber-500/50 [&:has(:checked)]:border-amber-500 [&:has(:checked)]:bg-amber-500/5">
-                                        <input type="radio" name="eval_status" value="incomplete" class="hidden">
-                                        <span
-                                            class="material-symbols-outlined text-amber-500 group-hover:scale-110 transition-transform">warning</span>
-                                        <span class="text-xs font-bold text-text-main">Incompleta</span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div>
-                                <p class="text-[10px] font-bold text-text-main uppercase mb-2">Comentario de
-                                    Retroalimentación</p>
-                                <textarea id="eval-feedback" rows="4"
-                                    class="w-full p-4 bg-surface-dim border border-surface-border rounded-xl text-sm focus:border-primary outline-none transition-colors"
-                                    placeholder="Escribe aquí tu retroalimentación para el estudiante..."
-                                    required></textarea>
-                            </div>
-
-                            <button type="submit"
-                                class="w-full py-4 bg-primary text-white font-bold rounded-xl hover:bg-primary-hover shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined">send</span> Enviar Evaluación
-                                <div
-                                    class="hidden animate-spin h-4 w-4 border-2 border-white/30 border-t-white rounded-full">
-                                </div>
-                            </button>
-                        </form>
-                    </div>
-                </div>
             </div>
         </div>
     </section>

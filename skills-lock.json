@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "landing-page-design": {
+      "source": "infsh-skills/skills",
+      "sourceType": "github",
+      "skillPath": "guides/design/landing-page-design/SKILL.md",
+      "computedHash": "d9194d6a3cd823ed41ebb3647294837aa8952106693b90aa5d7af0a019cce922"
+    },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/web-design-guidelines/SKILL.md",
+      "computedHash": "f3bc47f890f42a44db1007ab390709ec368e4b8c089baee6b0007182236ac474"
+    }
+  }
+}

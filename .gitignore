@@ -1,0 +1,6 @@
+# Ignorar videos pesados
+*.mp4
+videos_lecciones/
+
+# Firebase
+.firebase/

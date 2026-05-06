@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "on-secondary-container": "#6b4b00",
+                "inverse-on-surface": "#edf1f7",
+                "on-tertiary-fixed-variant": "#624000",
+                "surface-variant": "#dfe3e9",
+                "primary-fixed": "#cae6ff",
+                "surface-container-lowest": "#ffffff",
+                "on-tertiary-fixed": "#291800",
+                "surface-container": "#eaeef4",
+                "error-container": "#ffdad6",
+                "on-primary-fixed-variant": "#004b70",
+                "surface-bright": "#f6f9ff",
+                "tertiary": "#825500",
+                "surface-dim": "#d6dae0",
+                "inverse-primary": "#8ccdff",
+                "secondary-fixed": "#ffdea8",
+                "inverse-surface": "#2c3136",
+                "on-secondary-fixed": "#271900",
+                "surface": "#f6f9ff",
+                "surface-container-low": "#f0f4fa",
+                "outline": "#6e7882",
+                "outline-variant": "#bec8d2",
+                "on-primary-container": "#004566",
+                "background": "#f6f9ff",
+                "on-primary-fixed": "#001e30",
+                "tertiary-container": "#e99d0c",
+                "on-background": "#171c21",
+                "tertiary-fixed": "#ffddb3",
+                "primary-container": "#38b6ff",
+                "on-error": "#ffffff",
+                "surface-tint": "#006493",
+                "surface-container-high": "#e4e8ef",
+                "on-primary": "#ffffff",
+                "primary": "#006493",
+                "error": "#ba1a1a",
+                "secondary-container": "#feb700",
+                "on-secondary-container": "#6b4b00",
+                "on-tertiary-container": "#5a3a00",
+                "secondary-fixed-dim": "#ffba20",
+                "surface-container-highest": "#dfe3e9",
+                "on-surface-variant": "#3e4850",
+                "on-secondary-fixed-variant": "#5e4200",
+                "on-surface": "#171c21",
+                "primary-fixed-dim": "#8ccdff",
+                "tertiary-fixed-dim": "#ffb94f",
+                "secondary": "#7c5800",
+                "on-error-container": "#93000a",
+                "on-secondary": "#ffffff",
+                "on-tertiary": "#ffffff"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "container_max_width": "1200px",
+                "base": "4px",
+                "xl": "48px",
+                "md": "24px",
+                "sm": "12px",
+                "xs": "8px",
+                "lg": "32px",
+                "sidebar_width": "240px"
+            },
+            "fontFamily": {
+                "body-lg": ["Inter"],
+                "h2": ["Inter"],
+                "label-caps": ["Inter"],
+                "h1": ["Inter"],
+                "h3": ["Inter"],
+                "body-sm": ["Inter"]
+            },
+            "fontSize": {
+                "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "h2": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "h3": ["18px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .sidebar-active {
+            font-variation-settings: 'FILL' 1;
+        }
+        body {
+            background-color: #f6f9ff;
+        }
+    </style>
+</head>
+<body class="font-body-lg text-on-surface">
+<!-- TopNavBar -->
+<header class="bg-white/80 backdrop-blur-xl border-b border-slate-200 shadow-[0_4px_20px_-5px_rgba(56,182,255,0.1)] fixed top-0 z-50 w-full">
+<div class="flex justify-between items-center px-8 h-16 w-full max-w-[1440px] mx-auto">
+<div class="text-xl font-extrabold tracking-tighter text-sky-600 font-['Inter'] antialiased">
+                Sin Limites Academy
+            </div>
+<div class="flex items-center gap-6">
+<div class="relative hidden md:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="pl-10 pr-4 py-2 bg-slate-100 border-none rounded-xl text-body-sm focus:ring-2 focus:ring-primary-container w-64" placeholder="Search resources..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-slate-500 hover:text-sky-500 transition-colors duration-200 active:scale-95">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-slate-500 hover:text-sky-500 transition-colors duration-200 active:scale-95">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-slate-200">
+<img alt="User avatar" data-alt="Professional headshot of a student for an educational platform profile. The lighting is soft and natural, against a clean, off-white studio background. The subject wears professional yet approachable attire, fitting a modern academy aesthetic. The overall mood is confident and academic, maintaining high-key clarity and a minimalist, distraction-free composition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuATK5mr6XRDgJbTYiJ77R7hssfiPc35WiFgahuSm4IDvspd12qzLDKO6CQuv-dDzQWm0y8e82udS1NDYeHXgHHZEDvvH01khIfw_XbMCfMLvAk0AuU7Pwe1xs3TZuny8A-aSTSCdb0u1_o9kEab7RwLG6d1RMkpUjHQSaHAiCgM22gPYdjdrlegCnIyDnU7XrlCKVpl0ZZeB8Tu6vqz-D4N3XIIEIz863w4fSpWV7H2_NtfibSyGBOY-vVpAkgqj5QOE0G33J0YjxI"/>
+</div>
+</div>
+</div>
+</div>
+</header>
+<div class="flex pt-16">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 border-r border-slate-200 bg-white/90 backdrop-blur-lg fixed left-0 top-0 shadow-xl shadow-slate-200/50 flex flex-col pt-20">
+<nav class="flex-1">
+<a class="flex items-center gap-3 px-6 py-4 text-sky-600 border-l-4 border-sky-500 bg-sky-50/50 font-['Inter'] uppercase tracking-wider text-xs font-bold transition-transform hover:translate-x-1" href="#">
+<span class="material-symbols-outlined sidebar-active" data-icon="school" style="font-variation-settings: 'FILL' 1;">school</span>
+                    My Courses
+                </a>
+<a class="flex items-center gap-3 px-6 py-4 text-slate-500 hover:bg-slate-50 font-['Inter'] uppercase tracking-wider text-xs font-bold transition-all duration-300 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+                    Account
+                </a>
+</nav>
+<div class="p-6">
+<button class="w-full py-3 px-4 bg-primary-container text-on-primary font-h3 text-center rounded-xl shadow-lg shadow-sky-200/50 hover:bg-sky-500 transition-all active:scale-95">
+                    Browse Catalog
+                </button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 flex-1 p-md lg:p-xl">
+<div class="max-w-[1000px] mx-auto space-y-lg">
+<!-- Breadcrumbs & Header -->
+<div class="space-y-sm">
+<nav class="flex items-center gap-2 text-slate-400 text-body-sm">
+<span>Courses</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span>Institutional Scaling</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-primary">Assignments</span>
+</nav>
+<div class="flex justify-between items-end">
+<div>
+<h1 class="font-h1 text-on-surface">Module 4: Institutional Scaling Strategy</h1>
+<p class="text-on-surface-variant text-body-lg mt-2">Submit your comprehensive scaling roadmap for peer review and instructor feedback.</p>
+</div>
+<div class="flex flex-col items-end gap-2">
+<span class="px-3 py-1 bg-secondary-container/20 text-on-secondary-container text-label-caps rounded-full border border-secondary-container/30">
+                                Status: In Progress
+                            </span>
+<div class="w-32 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+<div class="w-2/3 h-full bg-secondary-container"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Assignment Body: Bento Style Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-md">
+<!-- Left Column: Upload Zone (Col-Span 2) -->
+<div class="lg:col-span-2 space-y-md">
+<div class="bg-white rounded-xl p-lg shadow-[0_15px_30px_-10px_rgba(0,0,0,0.04)] border border-white">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="upload_file">upload_file</span>
+<h3 class="font-h3">Submission Portal</h3>
+</div>
+<!-- Drag & Drop Zone -->
+<div class="group relative border-2 border-dashed border-slate-200 rounded-xl p-xl flex flex-col items-center justify-center text-center space-y-4 hover:border-primary-container hover:bg-sky-50/30 transition-all duration-300">
+<div class="w-16 h-16 rounded-full bg-sky-50 flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-3xl" data-icon="cloud_upload">cloud_upload</span>
+</div>
+<div class="space-y-1">
+<p class="font-h3 text-on-surface">Drag and drop your strategy document here</p>
+<p class="text-body-sm text-slate-400">PDF, DOCX or PPTX (Max 25MB)</p>
+</div>
+<button class="mt-4 px-6 py-2 border border-primary-container text-primary font-h3 rounded-lg hover:bg-primary-container hover:text-white transition-all">
+                                    Browse Files
+                                </button>
+<input class="absolute inset-0 opacity-0 cursor-pointer" type="file"/>
+</div>
+<div class="mt-8 flex items-center gap-2 text-body-sm text-slate-500 bg-slate-50 p-4 rounded-lg">
+<span class="material-symbols-outlined text-amber-500" style="font-variation-settings: 'FILL' 1;">info</span>
+<p>Make sure to include the financial projection spreadsheet as an appendix within your PDF.</p>
+</div>
+</div>
+<!-- Previous Submissions / History -->
+<div class="bg-white rounded-xl p-lg shadow-[0_15px_30px_-10px_rgba(0,0,0,0.04)]">
+<h3 class="font-h3 mb-4">Submission History</h3>
+<div class="divide-y divide-slate-100">
+<div class="py-4 flex justify-between items-center">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded bg-slate-100 flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-400">description</span>
+</div>
+<div>
+<p class="font-h3 text-body-sm">draft_v1_scaling_strategy.pdf</p>
+<p class="text-body-sm text-slate-400">Uploaded Oct 24, 2023</p>
+</div>
+</div>
+<span class="text-body-sm text-primary font-semibold">View</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Resource Links & Sidebar Info -->
+<div class="space-y-md">
+<!-- Resources Card -->
+<div class="bg-white rounded-xl p-lg shadow-[0_15px_30px_-10px_rgba(0,0,0,0.04)] border border-white">
+<h3 class="font-h3 mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-container" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+                                Key Resources
+                            </h3>
+<ul class="space-y-4">
+<li>
+<a class="group flex items-start gap-3 p-3 rounded-lg hover:bg-sky-50 transition-colors" href="#">
+<span class="material-symbols-outlined text-primary pt-1">link</span>
+<div>
+<p class="text-body-sm font-semibold group-hover:text-primary">Institutional Framework PDF</p>
+<p class="text-xs text-slate-400">Official guidelines for scaling</p>
+</div>
+</a>
+</li>
+<li>
+<a class="group flex items-start gap-3 p-3 rounded-lg hover:bg-sky-50 transition-colors" href="#">
+<span class="material-symbols-outlined text-primary pt-1">play_circle</span>
+<div>
+<p class="text-body-sm font-semibold group-hover:text-primary">Scaling Case Study (Video)</p>
+<p class="text-xs text-slate-400">12 min watch • Module 4.2</p>
+</div>
+</a>
+</li>
+<li>
+<a class="group flex items-start gap-3 p-3 rounded-lg hover:bg-sky-50 transition-colors" href="#">
+<span class="material-symbols-outlined text-primary pt-1">table_chart</span>
+<div>
+<p class="text-body-sm font-semibold group-hover:text-primary">Financial Model Template</p>
+<p class="text-xs text-slate-400">Excel spreadsheet template</p>
+</div>
+</a>
+</li>
+</ul>
+</div>
+<!-- Instructions Summary -->
+<div class="bg-primary/5 rounded-xl p-lg border border-primary/10">
+<h4 class="font-label-caps text-primary mb-3">Deadlines</h4>
+<div class="space-y-4">
+<div class="flex justify-between items-center text-body-sm">
+<span class="text-slate-500">Draft Submission</span>
+<span class="font-semibold">Oct 28</span>
+</div>
+<div class="flex justify-between items-center text-body-sm">
+<span class="text-slate-500">Final Deadline</span>
+<span class="text-error font-semibold">Nov 04</span>
+</div>
+<hr class="border-primary/10"/>
+<p class="text-xs text-slate-500 italic">Late submissions will incur a 10% grade reduction per day.</p>
+</div>
+</div>
+<!-- Help Widget -->
+<div class="relative overflow-hidden bg-slate-900 rounded-xl p-lg text-white">
+<div class="relative z-10 space-y-4">
+<p class="font-h3">Need help with this assignment?</p>
+<p class="text-xs text-slate-300">Join the live Q&amp;A session tomorrow at 10:00 AM.</p>
+<button class="w-full py-2 bg-white text-slate-900 font-h3 text-sm rounded-lg hover:bg-slate-100 transition-colors">
+                                    Book Office Hours
+                                </button>
+</div>
+<!-- Subtle abstract bg element -->
+<div class="absolute -right-4 -bottom-4 w-24 h-24 bg-primary/20 rounded-full blur-2xl"></div>
+</div>
+</div>
+</div>
+<!-- Footer Section for Bottom Context -->
+<div class="pt-xl pb-md border-t border-slate-200">
+<div class="flex flex-col md:flex-row justify-between items-center gap-4 text-slate-400 text-body-sm">
+<p>© 2023 Sin Limites Academy. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="hover:text-primary transition-colors" href="#">Academic Integrity</a>
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">Support</a>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

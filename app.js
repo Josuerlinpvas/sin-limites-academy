@@ -259,6 +259,9 @@ const App = {
         if (State.darkMode) document.documentElement.classList.add('dark');
         this.bindEvents();
         
+        // Cargar Catálogo (Independiente del Login)
+        await this.fetchCourses();
+        
         // Solicitar permisos de notificación nativa
         if ("Notification" in window) {
             if (Notification.permission !== "granted" && Notification.permission !== "denied") {

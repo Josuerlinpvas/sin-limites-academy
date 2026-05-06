@@ -474,7 +474,7 @@
     </aside>
 
     <!-- Main Wrapper -->
-    <div class="flex-1 md:ml-64 flex flex-col h-screen overflow-hidden">
+    <div class="flex-1 flex flex-col h-screen overflow-hidden md:pl-64">
         <!-- Header -->
         <header
             class="h-20 bg-surface-base/80 backdrop-blur-md border-b border-surface-border flex items-center justify-between px-4 md:px-8 z-10 sticky top-0 transition-colors duration-300">
@@ -486,7 +486,7 @@
                 <h1 class="text-lg md:text-xl font-bold tracking-tight uppercase cursor-pointer hover:opacity-80 transition-opacity"
                     onclick="window.goBackToDashboard()">
                     <span class="text-primary">SIN LÍMITES</span> <span
-                        class="text-text-main hidden sm:inline">ACADEMY</span>
+                        class="text-text-main hidden md:inline">ACADEMY</span>
                 </h1>
             </div>
 
@@ -922,19 +922,18 @@
                 </div>
             </section>
             <!-- VIEW: MI CUENTA -->
-            <section id="view-account" class="view-section view-hidden w-full max-w-6xl mx-auto">
-                <div class="max-w-5xl mx-auto px-6 py-12">
-                    <div class="mb-10">
-                        <h2 class="text-3xl font-bold text-text-main tracking-tight">Mi Cuenta</h2>
-                        <p class="text-text-muted mt-2">Gestiona tu perfil, progreso y preferencias de seguridad.</p>
-                    </div>
+            <section id="view-account" class="view-section view-hidden w-full max-w-6xl mx-auto py-12 px-4 md:px-8">
+                <div class="mb-10">
+                    <h2 class="text-3xl font-bold text-text-main tracking-tight">Mi Cuenta</h2>
+                    <p class="text-text-muted mt-2">Gestiona tu perfil, progreso y preferencias de seguridad.</p>
+                </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         <!-- Columna Izquierda: Perfil y Stats -->
                         <div class="lg:col-span-1 space-y-6">
                             <!-- Tarjeta de Perfil -->
                             <div
-                                class="bg-surface-base border border-surface-border rounded-2xl p-6 shadow-soft text-center">
+                                class="bg-surface-base border border-surface-border rounded-2xl p-8 shadow-soft text-center">
                                 <div class="relative w-24 h-24 mx-auto mb-4 group">
                                     <!-- Input oculto para subir archivo -->
                                     <input type="file" id="avatar-upload" accept="image/*" class="hidden">
@@ -1004,20 +1003,17 @@
                             <div class="bg-surface-base border border-surface-border rounded-2xl p-6 shadow-soft">
                                 <h4 class="font-bold text-text-main mb-6 flex items-center gap-2">
                                     <span class="material-symbols-outlined text-secondary">workspace_premium</span>
-                                    Certificados y Lo <div id="certificates-container"
-                                        class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        <!-- Se rellena por app.js -->
-                                        <div
-                                            class="col-span-full border border-dashed border-surface-border rounded-xl p-8 flex flex-col items-center justify-center text-center text-text-muted bg-surface-base">
-                                            <span
-                                                class="material-symbols-outlined opacity-50 mb-1">workspace_premium</span>
-                                            <p class="text-xs font-medium">Completa tus cursos al 100% para obtener tus
-                                                certificados.</p>
-                                        </div>
+                                    Certificados y Logros
+                                </h4>
+                                <div id="certificates-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <!-- Se rellena por app.js -->
+                                    <div
+                                        class="col-span-full border border-dashed border-surface-border rounded-xl p-8 flex flex-col items-center justify-center text-center text-text-muted bg-surface-base">
+                                        <span class="material-symbols-outlined opacity-50 mb-1">workspace_premium</span>
+                                        <p class="text-xs font-medium">Completa tus cursos al 100% para obtener tus certificados.</p>
                                     </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
 
                     <!-- Preferencias -->
                     <div class="bg-surface-base border border-surface-border rounded-2xl p-6 shadow-soft">
@@ -1092,21 +1088,18 @@
                         </div>
                     </div>
                 </div>
-    </div>
-    </div>
-    </section>
+            </div>
+            </section>
 
     <!-- VIEW: ADMIN PANEL -->
-    <section id="view-admin" class="view-section view-hidden w-full max-w-6xl mx-auto">
-        <div class="max-w-6xl mx-auto px-4 md:px-8 py-12">
-            <div class="mb-10">
-                <h2 class="text-3xl font-bold text-text-main tracking-tight flex items-center gap-3">
-                    <span class="material-symbols-outlined text-amber-500 text-4xl">admin_panel_settings</span>
-                    Panel de Administración
-                </h2>
-                <p class="text-text-muted mt-2">Gestiona los cursos, módulos, lecciones y estudiantes de la academia.
-                </p>
-            </div>
+    <section id="view-admin" class="view-section view-hidden w-full max-w-6xl mx-auto py-12 px-4 md:px-8">
+        <div class="mb-10">
+            <h2 class="text-3xl font-bold text-text-main tracking-tight flex items-center gap-3">
+                <span class="material-symbols-outlined text-amber-500 text-4xl">admin_panel_settings</span>
+                Panel de Administración
+            </h2>
+            <p class="text-text-muted mt-2">Gestiona los cursos, módulos, lecciones y estudiantes de la academia.</p>
+        </div>
 
             <!-- Admin Tabs -->
             <div class="flex border-b border-surface-border mb-8 overflow-x-auto custom-scroll">
